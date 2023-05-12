@@ -26,21 +26,16 @@ type Client struct {
 	client *mongo.Client
 }
 
-
-
 // NewClient represents the Client constructor (i.e. `new mongo.Client()`) and
 // returns a new Mongo client object.
 // connURI -> mongodb://username:password@address:port/db?connect=direct
 func (*Mongo) NewClient(connURI string) interface{} {
-	
 	clientOptions := options.Client().ApplyURI(connURI)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		return err
-	} 
-		return  &Client{client: client}
-	
-	
+	}
+	return &Client{client: client}
 }
 
 func (c *Client) Insert(database string, collection string, doc map[string]string) error {
@@ -53,11 +48,20 @@ func (c *Client) Insert(database string, collection string, doc map[string]strin
 	return nil
 }
 
-func (c *Client) Find(database string, collection string, filter interface{}) []bson.M{
+func (c *Client) DeleteOne(database string, collection string, filter interface{}) error {
+	db := c.client.Database(database)
+	col := db.Collection(collection)
+	_, err := col.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) Find(database string, collection string, filter interface{}) []bson.M {
 	db := c.client.Database(database)
 	col := db.Collection(collection)
 
-	
 	log.Print("filter is ", filter)
 	cur, err := col.Find(context.TODO(), filter)
 	if err != nil {
