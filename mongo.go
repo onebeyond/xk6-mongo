@@ -38,14 +38,10 @@ func (*Mongo) NewClient(connURI string) interface{} {
 	return &Client{client: client}
 }
 
-func (c *Client) Insert(database string, collection string, doc map[string]string) error {
+func (c *Client) InsertOne(database string, collection string, doc map[string]string) (*mongo.InsertOneResult, error) {
 	db := c.client.Database(database)
 	col := db.Collection(collection)
-	_, err := col.InsertOne(context.TODO(), doc)
-	if err != nil {
-		return err
-	}
-	return nil
+	return col.InsertOne(context.TODO(), doc)
 }
 
 func (c *Client) DeleteOne(database string, collection string, filter interface{}) error {

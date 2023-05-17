@@ -15,7 +15,7 @@ In my case this repository is cloned at `/projects/my/xk6-mongo`
 This would allow you to import the local development version on your k6 Javascript tests by using:
 
 ```bash
-xk6 build --with github.com/Bounteous17/xk6-mongo --replace module=/projects/my/xk6-mongo
+xk6 build --with github.com/Bounteous17/xk6-mongo=/projects/my/xk6-mongo
 ```
 
 You can now test your local changes by importing the new module build:
