@@ -1,7 +1,7 @@
 import xk6_mongo from 'k6/x/mongo';
 
 
-const client = xk6_mongo.newClient('mongodb://localhost:27017');
+const client = xk6_mongo.newClient('mongodb://localhost:27017', 'testcollection');
 export default ()=> {
 
     let doc = {
@@ -12,5 +12,5 @@ export default ()=> {
         time: `${new Date(Date.now()).toISOString()}`
       };
 
-      client.insert("testdb", "testcollection", doc);
+      client.insertOne("testdb", doc);
 }
